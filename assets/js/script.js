@@ -20,7 +20,6 @@ function displayHistory(history) {
 }
 
 function saveHistory(location) {
-    console.log(location);
     for (i = 0; i < historyArray.length; i++) {
         if (location === historyArray[i]) {
             historyArray.splice(i, 1);
@@ -49,6 +48,56 @@ function updateHistory() {
     }
 }
 
+function buildTodayWeather(weather) {
+    const todayHeader = $('<h2>');
+    todayHeader.text(`Today's weather for: ${weather.name}`);
+
+    const todayCard = $('<div>');
+    todayCard.addClass('card');
+
+    const todayTemp = $('<p>');
+    todayTemp.text(`Temperature: ${weather.main.temp}°F`);
+
+    const todayHumidity = $('<p>');
+    todayHumidity.text(`Humidity: ${weather.main.humidity}%`);
+
+    const todayWind = $('<p>');
+    todayWind.text(`Wind: ${weather.wind.speed} MPH`);
+    
+    todayCard.append(todayTemp, todayHumidity, todayWind);
+    todayWeatherEl.append(todayHeader, todayCard);
+}
+
+function buildForecast(forecasts) {
+    console.log(forecasts);
+    const forecastHeader = $('<h2>');
+    forecastHeader.text('Upcoming Weather Forecast');
+    wthForecastEl.append(forecastHeader);
+
+    for (let forecast of forecasts) {
+        const dateArray = forecast.dt_txt.split(' ');
+        if (dateArray[1] === '12:00:00') {
+            const forecastCard = $('<div>');
+            forecastCard.addClass('card');
+
+            const forecastDate = $('<p>');
+            forecastDate.text(dateArray[0]);
+
+            const forecastTemp = $('<p>');
+            forecastTemp.text(`Temp: ${forecast.main.temp}°F`)
+
+            const forecastHumidity = $('<p>');
+            forecastHumidity.text(`Humidity: ${forecast.main.humidity}%`);
+
+            const forecastWind = $('<p>');
+            forecastWind.text(`Wind: ${forecast.wind.speed} MPH`);
+
+            forecastCard.append(forecastDate, forecastTemp, forecastHumidity, forecastWind)
+            wthForecastEl.append(forecastCard);
+        }
+    }
+}
+
 function getForecast(coordinates) {
     const latitude = coordinates.coord.lat;
     const longitude = coordinates.coord.lon;
@@ -56,16 +105,19 @@ function getForecast(coordinates) {
     const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&APPID=${apiKey}`;
 
     fetch(weatherUrl)
-    .then(function(response) {
-        if(response.ok) {
-            return response.json();
-        } else {
-            console.log('error')
-        }
-    })
-    .then(function(weather) {
-        console.log(weather);
-    })
+        .then(function(response) {
+            if(response.ok) {
+                return response.json();
+            } else {
+                console.log('error');
+            }
+        })
+        .then(function(forecast) {
+            todayWeatherEl.empty();
+            wthForecastEl.empty();
+            buildTodayWeather(coordinates);
+            buildForecast(forecast.list);
+        })
 }
 
 function fetchWeather(event) {
@@ -79,11 +131,10 @@ function fetchWeather(event) {
             if(response.ok) {
                 return response.json();
             } else {
-                console.log('error')
+                console.log('error');
             }
         })
         .then(function(coordinates) {
-            console.log(coordinates);
             getForecast(coordinates);
             saveHistory(searchLocation);
             updateHistory();
