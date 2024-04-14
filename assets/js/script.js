@@ -4,6 +4,8 @@ const searchInputEl = $('#search');
 const historyEl = $('#history');
 const todayWeatherEl = $('#today');
 const wthForecastEl = $('#five-day');
+const apiKey = '4f194bed6606dee76ffaf3829b41e1e9'
+
 
 // Get history from local storage or initialize empty array
 let historyArray = JSON.parse(localStorage.getItem('history')) || [];
@@ -47,18 +49,32 @@ function updateHistory() {
     }
 }
 
-function getForecast(weather) {
-    console.log('here is the weather')
+function getForecast(coordinates) {
+    const latitude = coordinates.coord.lat;
+    const longitude = coordinates.coord.lon;
+
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&APPID=${apiKey}`;
+
+    fetch(weatherUrl)
+    .then(function(response) {
+        if(response.ok) {
+            return response.json();
+        } else {
+            console.log('error')
+        }
+    })
+    .then(function(weather) {
+        console.log(weather);
+    })
 }
 
 function fetchWeather(event) {
     event.preventDefault();
 
-    const searchLocation = searchInputEl.val().substr(0,1).toUpperCase() + searchInputEl.val().substr(1);;
-    const weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&APPID=4f194bed6606dee76ffaf3829b41e1e9`;
-    console.log(weatherURL);
+    const searchLocation = searchInputEl.val().substr(0,1).toUpperCase() + searchInputEl.val().substr(1);
+    const coordsUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&units=imperial&APPID=${apiKey}`;
 
-    fetch(weatherURL)
+    fetch(coordsUrl)
         .then(function(response) {
             if(response.ok) {
                 return response.json();
@@ -66,14 +82,23 @@ function fetchWeather(event) {
                 console.log('error')
             }
         })
-        .then(function(weather) {
-            console.log(weather);
-            getForecast(weather);
+        .then(function(coordinates) {
+            console.log(coordinates);
+            getForecast(coordinates);
             saveHistory(searchLocation);
             updateHistory();
         })
+
+    searchInputEl.val('');
+}
+
+function histSearch() {
+    searchInputEl.val($(this).attr('data-history'));
+    fetchWeather(event);
 }
 
 searchFormEl.on('submit', fetchWeather);
+
+historyEl.on('click', '.hist-btn', histSearch);
 
 window.load = (updateHistory());
