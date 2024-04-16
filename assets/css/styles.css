@@ -1,0 +1,13 @@
+/* Universal Selectors */
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    background-color: skyblue;
+}
+
+.search {
+    background-color: lightslategray;
+}

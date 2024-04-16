@@ -11,7 +11,7 @@ let historyArray = JSON.parse(localStorage.getItem('history')) || [];
 
 function displayHistory(history) {
     const histButton = $('<button>');
-    histButton.addClass('button hist-btn');
+    histButton.addClass('button hist-btn col-7 m-1 p-1');
     histButton.attr('data-history', history);
     histButton.text(history);
 
