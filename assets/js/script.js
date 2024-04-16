@@ -2,8 +2,7 @@
 const searchFormEl = $('.search-form');
 const searchInputEl = $('#search');
 const historyEl = $('#history');
-const todayWeatherEl = $('#today');
-const wthForecastEl = $('#five-day');
+const forecastEl = $('.forecast');
 const apiKey = '4f194bed6606dee76ffaf3829b41e1e9'
 
 
@@ -49,6 +48,9 @@ function updateHistory() {
 }
 
 function buildTodayWeather(weather) {
+    const card = $('<div>');
+    card.addClass('card');
+
     const todayHeader = $('<h2>');
     todayHeader.text(`Today's weather for: ${weather.name}`);
 
@@ -65,35 +67,44 @@ function buildTodayWeather(weather) {
     todayWind.text(`Wind: ${weather.wind.speed} MPH`);
     
     todayCard.append(todayTemp, todayHumidity, todayWind);
-    todayWeatherEl.append(todayHeader, todayCard);
+    card.append(todayHeader, todayCard);
+    forecastEl.append(card);
 }
 
 function buildForecast(forecasts) {
     console.log(forecasts);
+    const forecastSection = $('<section>');
+    forecastSection.addClass('row d-flex justify-content-around');
+
     const forecastHeader = $('<h2>');
     forecastHeader.text('Upcoming Weather Forecast');
-    wthForecastEl.append(forecastHeader);
+    forecastEl.append(forecastHeader);
 
     for (let forecast of forecasts) {
         const dateArray = forecast.dt_txt.split(' ');
         if (dateArray[1] === '12:00:00') {
             const forecastCard = $('<div>');
-            forecastCard.addClass('card');
+            forecastCard.addClass('card col-1');
 
             const forecastDate = $('<p>');
+            forecastDate.addClass('card-text');
             forecastDate.text(dateArray[0]);
 
             const forecastTemp = $('<p>');
+            forecastTemp.addClass('card-text');
             forecastTemp.text(`Temp: ${forecast.main.temp}°F`)
 
             const forecastHumidity = $('<p>');
+            forecastHumidity.addClass('card-text');
             forecastHumidity.text(`Humidity: ${forecast.main.humidity}%`);
 
             const forecastWind = $('<p>');
+            forecastWind.addClass('card-text');
             forecastWind.text(`Wind: ${forecast.wind.speed} MPH`);
 
             forecastCard.append(forecastDate, forecastTemp, forecastHumidity, forecastWind)
-            wthForecastEl.append(forecastCard);
+            forecastSection.append(forecastCard)
+            forecastEl.append(forecastSection);
         }
     }
 }
@@ -113,8 +124,7 @@ function getForecast(coordinates) {
             }
         })
         .then(function(forecast) {
-            todayWeatherEl.empty();
-            wthForecastEl.empty();
+            forecastEl.empty();
             buildTodayWeather(coordinates);
             buildForecast(forecast.list);
         })
