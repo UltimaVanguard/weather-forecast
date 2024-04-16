@@ -5,9 +5,25 @@
 }
 
 header {
-    background-color: skyblue;
+    background-color: cornflowerblue;
 }
 
 .search {
     background-color: lightslategray;
+}
+
+.today-card {
+    background-color: lightgray;
+}
+
+.today-header {
+    background-color: skyblue;
+}
+
+.forecast-card {
+    background-color: lightgray;
+}
+
+.forecast-header {
+    background-color: skyblue;
 }

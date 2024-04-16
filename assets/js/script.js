@@ -27,7 +27,7 @@ function saveHistory(location) {
         }
     }
 
-    if (historyArray.length === 10) {
+    if (historyArray.length === 15) {
         historyArray.pop();
         historyArray.unshift(location);
     } else {
@@ -49,13 +49,24 @@ function updateHistory() {
 
 function buildTodayWeather(weather) {
     const card = $('<div>');
-    card.addClass('card');
+    card.addClass('card today-card col-10 m-1 p-2');
 
     const todayHeader = $('<h2>');
-    todayHeader.text(`Today's weather for: ${weather.name}`);
+    todayHeader.addClass('card-header today-header')
+    if (weather.weather[0].main === "Clear") {
+        todayHeader.text(`Today's weather for: ${weather.name}☀️`);
+    } else if (weather.weather[0].main === "Clouds") {
+        todayHeader.text(`Today's weather for: ${weather.name}⛅`);
+    } else if (weather.weather[0].main === "Rain") {
+        todayHeader.text(`Today's weather for: ${weather.name}🌧️`);
+    } else if (weather.weather[0].main === "Snow") {
+        todayHeader.text(`Today's weather for: ${weather.name}🌨️`);
+    } else {
+        todayHeader.text(`Today's weather for: ${weather.name}❓`)
+    }
 
     const todayCard = $('<div>');
-    todayCard.addClass('card');
+    todayCard.addClass('card today-body m-1 p-1');
 
     const todayTemp = $('<p>');
     todayTemp.text(`Temperature: ${weather.main.temp}°F`);
@@ -74,21 +85,33 @@ function buildTodayWeather(weather) {
 function buildForecast(forecasts) {
     console.log(forecasts);
     const forecastSection = $('<section>');
-    forecastSection.addClass('row d-flex justify-content-around');
+    forecastSection.addClass('row d-flex justify-content-around m-2 p-2');
 
     const forecastHeader = $('<h2>');
+    forecastHeader.addClass('text-center m-1 p-2');
     forecastHeader.text('Upcoming Weather Forecast');
-    forecastEl.append(forecastHeader);
+    forecastSection.append(forecastHeader);
 
     for (let forecast of forecasts) {
         const dateArray = forecast.dt_txt.split(' ');
         if (dateArray[1] === '12:00:00') {
             const forecastCard = $('<div>');
-            forecastCard.addClass('card col-1');
+            forecastCard.addClass('card forecast-card col-2');
 
-            const forecastDate = $('<p>');
-            forecastDate.addClass('card-text');
+            const forecastDate = $('<h4>');
+            forecastDate.addClass('card-header forecast-header text-center');
             forecastDate.text(dateArray[0]);
+            if (forecast.weather[0].main === "Clear") {
+                forecastDate.text(`${dateArray[0]}☀️`);
+            } else if (forecast.weather[0].main === "Clouds") {
+                forecastDate.text(`${dateArray[0]}⛅`);
+            } else if (forecast.weather[0].main === "Rain") {
+                forecastDate.text(`${dateArray[0]}🌧️`);
+            } else if (forecast.weather[0].main === "Snow") {
+                forecastDate.text(`${dateArray[0]}🌨️`);
+            } else {
+                forecastDate.text(`${dateArray[0]}❓`);
+            }
 
             const forecastTemp = $('<p>');
             forecastTemp.addClass('card-text');
