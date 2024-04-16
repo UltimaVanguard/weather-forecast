@@ -132,8 +132,14 @@ function getForecast(coordinates) {
 
 function fetchWeather(event) {
     event.preventDefault();
+    let capitalArray = [];
 
-    const searchLocation = searchInputEl.val().substr(0,1).toUpperCase() + searchInputEl.val().substr(1);
+    let searchArray = searchInputEl.val().split(' ');
+    for (let word of searchArray) {
+        word = word.substr(0,1).toUpperCase() + word.substr(1).toLowerCase();
+        capitalArray.push(word);
+    }
+    const searchLocation = capitalArray.join(' ');
     const coordsUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&units=imperial&APPID=${apiKey}`;
 
     fetch(coordsUrl)
