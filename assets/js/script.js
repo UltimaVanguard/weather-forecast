@@ -174,7 +174,8 @@ function fetchWeather(event) {
             if(response.ok) {
                 return response.json();
             } else {
-                console.log('error');
+                alert('An error has occurred. Please try again!');
+                return
             }
         })
         .then(function(coordinates) {
