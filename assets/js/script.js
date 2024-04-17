@@ -49,7 +49,7 @@ function updateHistory() {
 
 function buildTodayWeather(weather) {
     const card = $('<div>');
-    card.addClass('card today-card col-10 m-1 p-2');
+    card.addClass('card today-card col-12 m-1 p-2');
 
     const todayHeader = $('<h2>');
     todayHeader.addClass('card-header today-header')
@@ -85,7 +85,7 @@ function buildTodayWeather(weather) {
 function buildForecast(forecasts) {
     console.log(forecasts);
     const forecastSection = $('<section>');
-    forecastSection.addClass('row d-flex justify-content-around m-2 p-2');
+    forecastSection.addClass('row d-flex justify-content-around align-self-end m-2 p-2');
 
     const forecastHeader = $('<h2>');
     forecastHeader.addClass('text-center m-1 p-2');
@@ -96,9 +96,9 @@ function buildForecast(forecasts) {
         const dateArray = forecast.dt_txt.split(' ');
         if (dateArray[1] === '12:00:00') {
             const forecastCard = $('<div>');
-            forecastCard.addClass('card forecast-card col-2');
+            forecastCard.addClass('card forecast-card col-lg-2 col-md-12 mb-2');
 
-            const forecastDate = $('<h4>');
+            const forecastDate = $('<h6>');
             forecastDate.addClass('card-header forecast-header text-center');
             forecastDate.text(dateArray[0]);
             if (forecast.weather[0].main === "Clear") {
@@ -113,6 +113,9 @@ function buildForecast(forecasts) {
                 forecastDate.text(`${dateArray[0]}❓`);
             }
 
+            const forecastBody = $('<div>');
+            forecastBody.addClass('card m-1 p-1')
+
             const forecastTemp = $('<p>');
             forecastTemp.addClass('card-text');
             forecastTemp.text(`Temp: ${forecast.main.temp}°F`)
@@ -125,8 +128,9 @@ function buildForecast(forecasts) {
             forecastWind.addClass('card-text');
             forecastWind.text(`Wind: ${forecast.wind.speed} MPH`);
 
-            forecastCard.append(forecastDate, forecastTemp, forecastHumidity, forecastWind)
-            forecastSection.append(forecastCard)
+            forecastBody.append(forecastTemp, forecastHumidity, forecastWind);
+            forecastCard.append(forecastDate, forecastBody);
+            forecastSection.append(forecastCard);
             forecastEl.append(forecastSection);
         }
     }

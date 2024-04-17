@@ -5,25 +5,36 @@
 }
 
 header {
-    background-color: cornflowerblue;
+    background-color: #CAEBF2;
+}
+
+form input[type=text] {
+    width: 150px;
+    margin-bottom: 3px;
 }
 
 .search {
-    background-color: lightslategray;
+    background-color: #A9A9A9;
+}
+
+.forecast {
+    background-color: #EFEFEF;
 }
 
 .today-card {
-    background-color: lightgray;
+    font-size: 150%;
+    background-color: #A9A9A9;
 }
 
 .today-header {
-    background-color: skyblue;
+    background-color: #CAEBF2;
 }
 
 .forecast-card {
-    background-color: lightgray;
+    font-size: 80%;
+    background-color: #A9A9A9;
 }
 
 .forecast-header {
-    background-color: skyblue;
+    background-color: #CAEBF2;
 }
