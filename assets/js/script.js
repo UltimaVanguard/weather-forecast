@@ -23,6 +23,7 @@ function saveHistory(location) {
         if (location === historyArray[i]) {
             historyArray.splice(i, 1);
             historyArray.unshift(location);
+            localStorage.setItem('history', JSON.stringify(historyArray));
             return;
         }
     }
@@ -61,6 +62,8 @@ function buildTodayWeather(weather) {
         todayHeader.text(`Today's weather for: ${weather.name}🌧️`);
     } else if (weather.weather[0].main === "Snow") {
         todayHeader.text(`Today's weather for: ${weather.name}🌨️`);
+    } else if (weather.weather[0].main === "Mist") {
+        todayHeader.text(`Today's weather for: ${weather.name}🌫️`);
     } else {
         todayHeader.text(`Today's weather for: ${weather.name}❓`)
     }
@@ -109,6 +112,8 @@ function buildForecast(forecasts) {
                 forecastDate.text(`${dateArray[0]}🌧️`);
             } else if (forecast.weather[0].main === "Snow") {
                 forecastDate.text(`${dateArray[0]}🌨️`);
+            } else if (forecast.weather[0].main === "Mist") {
+                forecastDate.text(`${dateArray[0]}🌫️`);
             } else {
                 forecastDate.text(`${dateArray[0]}❓`);
             }
@@ -179,6 +184,7 @@ function fetchWeather(event) {
             }
         })
         .then(function(coordinates) {
+            console.log(coordinates)
             getForecast(coordinates);
             saveHistory(searchLocation);
             updateHistory();
@@ -190,6 +196,7 @@ function fetchWeather(event) {
 function histSearch() {
     searchInputEl.val($(this).attr('data-history'));
     fetchWeather(event);
+    
 }
 
 searchFormEl.on('submit', fetchWeather);

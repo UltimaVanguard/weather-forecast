@@ -22,11 +22,13 @@ The local storage will also not store duplicate data and if you do search the sa
 
 If there is an error during the fetch, an alert will let you know to try again.
 
-![alt text](https://github.com/UltimaVanguard/weather-forecast/blob/main/assets/images/blog-form.png)
+![alt text](https://github.com/UltimaVanguard/weather-forecast/blob/main/assets/images/home-page.png)
 
-![alt text](https://github.com/UltimaVanguard/weather-forecast/blob/main/assets/images/blog-form-dark.png)
+![alt text](https://github.com/UltimaVanguard/weather-forecast/blob/main/assets/images/weather-display.png)
 
 ![alt text](https://github.com/UltimaVanguard/weather-forecast/blob/main/assets/images/alert.png)
+
+![alt text](https://github.com/UltimaVanguard/weather-forecast/blob/main/assets/images/history.png)
 
 ## Credits
 
