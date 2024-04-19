@@ -152,7 +152,8 @@ function getForecast(coordinates) {
             if(response.ok) {
                 return response.json();
             } else {
-                console.log('error');
+                alert('An error has occurred. Please try again!');
+                return;
             }
         })
         .then(function(forecast) {
@@ -180,14 +181,18 @@ function fetchWeather(event) {
                 return response.json();
             } else {
                 alert('An error has occurred. Please try again!');
-                return
+                return;
             }
         })
         .then(function(coordinates) {
-            console.log(coordinates)
-            getForecast(coordinates);
-            saveHistory(searchLocation);
-            updateHistory();
+            if (!coordinates) {
+                alert('City has no data. Please try another!');
+                return;
+            } else {
+                getForecast(coordinates);
+                saveHistory(searchLocation);
+                updateHistory();
+            }
         })
 
     searchInputEl.val('');
